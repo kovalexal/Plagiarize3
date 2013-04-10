@@ -12,7 +12,7 @@ PROGRAM_START = time.time()
 parser = argparse.ArgumentParser(description = "Making a statistics about a pdf or txt file.")
 parser.add_argument("-p", "--pdf", nargs = 1, help = "Path to pdf file" ''', metavar = "\"*.pdf\""''')
 parser.add_argument("-t", "--txt", nargs = 1, help = "Path to txt file" ''', metavar = "\"*.txt\""''')
-parser.add_argument("-g", "--garbage", nargs = 1, help = "Path to a file with a garbage")
+parser.add_argument("-s", "--stopwords", nargs = 1, help = "Path to a file with a stopwords")
 parser.add_argument("-l", "--language", nargs = 1, help = "Specifies a language for a text or PDF document", metavar = "RUS/ENG")
 parser.add_argument("-o", "--output", nargs = 1, help = "Path to output file")
 
@@ -35,10 +35,10 @@ if (args.txt != None):
 else:
 	input_file = args.pdf[0] + ".txt"
 
-if (args.garbage != None):
-	garbage_file = args.garbage[0]
+if (args.stopwords != None):
+	stopwords_file = args.stopwords[0]
 else:
-	garbage_file = ""
+	stopwords_file = ""
 
 if (args.output != None):
 	output_file = args.output[0]
@@ -57,11 +57,10 @@ if (args.language != None and (args.language[0] in languages)):
     else:
         lemmatizer = None
 else:
-    print("No language was specified")
-    exit(0)
+    lemmatizer = None
 
 print("input_file =", input_file)
-print("garbage_file =", garbage_file)
+print("stopwords_file =", stopwords_file)
 print("output_file =", output_file)
 
 
@@ -91,22 +90,22 @@ end_time = time.time()
 print("Parsing TXT took {0:.3f}".format(end_time - start_time), "seconds")
 
 #Getting words for deleting
-if (garbage_file == ''):
-	garbage = set()
+if (stopwords_file == ''):
+	stopwords = set()
 	pass
 else:
-	#print("\nStarted parsing TXT with garbage, wait for a while...")
+	#print("\nStarted parsing TXT with stopwords, wait for a while...")
 	start_time = time.time()
-	garbage = split.get_list(garbage_file, enableComments = True)
+	stopwords = split.get_list(stopwords_file, enableComments = True)
 	end_time = time.time()
-	print("\nParsing TXT with garbage took {0:.3f}".format(end_time - start_time), "seconds")
-	garbage = set(garbage)
+	print("\nParsing TXT with stopwords took {0:.3f}".format(end_time - start_time), "seconds")
+	stopwords = set(stopwords)
 
 #Counting words - in dictionary
 words_in_text = 0
 print("\nStarted counting words")
 start_time = time.time()
-words = set(text) - garbage
+words = set(text) - stopwords
 words = list(words)
 dictionary = {word : 0 for word in words}
 
@@ -135,13 +134,13 @@ dictionary = tmpdict
 #count = [dictionary[words[i]] for i in range(len(words))]
 end_time = time.time()
 print("\nCounting words took {0:.3f}".format(end_time - start_time), "seconds")
-print("Words in text without garbage: {0}".format(words_in_text))
+print("Words in text without stopwords: {0}".format(words_in_text))
 
 
 #Counting words - in a list (SLOW)
 #print("\nStarted counting words")
 #start_time = time.time()
-#words = set(text) - garbage
+#words = set(text) - stopwords
 #words = list(words)
 #count = []
 #for i in range(len(words)):

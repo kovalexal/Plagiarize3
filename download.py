@@ -276,6 +276,8 @@ def download(url, directory = ".", callback=progress_callback):
 
     try:
         (tmpfile, headers) = urllib.urlretrieve(url, tmpfile, callback)
+    except KeyboardInterrupt:
+        exit(0)
     except:
         print("Can`t download!\n{0}\n".format(url))
         return ""
