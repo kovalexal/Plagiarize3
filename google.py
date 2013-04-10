@@ -220,11 +220,12 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
 def find(query, results):
     got_results = 0
     urls = []
-    for url in google.search(query + " filetype:pdf"):
+    for url in search(query + " filetype:pdf"):
         if (got_results >= results):
             break
         urls.append(url)
         got_results += 1
+    return urls
 
 # When run as a script, take all arguments as a search query and run it.
 if __name__ == "__main__":
