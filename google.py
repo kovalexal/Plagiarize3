@@ -1,3 +1,7 @@
+"""
+Modificated for my purposes
+"""
+
 #!/usr/bin/env python
 
 # Python bindings to the Google search engine
@@ -46,8 +50,14 @@ except ImportError:
 url_home          = "http://www.google.%(tld)s/"
 url_search        = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&btnG=Google+Search"
 url_next_page     = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&start=%(start)d"
-url_search_num    = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&num=%(num)d&btnG=Google+Search"
-url_next_page_num = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&num=%(num)d&start=%(start)d"
+url_search_num    = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&btnG=Google+Search"
+url_next_page_num = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&start=%(start)d"
+
+#Sites to block
+blocked = [
+    "http://www.youtube.com",
+    "http://www.blogger.com"
+]
 
 # Cookie jar. Stored at the user's home folder.
 home_folder = os.getenv('HOME')
@@ -92,7 +102,9 @@ def get_page(url):
 # Returns None if the link doesn't yield a valid result.
 def filter_result(link):
     try:
-
+        for blocked_site in blocked:
+            if link.startswith(blocked_site):
+                return None
         # Valid results are absolute URLs not pointing to a Google domain
         # like images.google.com or googleusercontent.com
         o = urllib.parse.urlparse(link, 'http')
@@ -204,6 +216,15 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
             url = url_next_page % vars()
         else:
             url = url_next_page_num % vars()
+
+def find(query, results):
+    got_results = 0
+    urls = []
+    for url in google.search(query + " filetype:pdf"):
+        if (got_results >= results):
+            break
+        urls.append(url)
+        got_results += 1
 
 # When run as a script, take all arguments as a search query and run it.
 if __name__ == "__main__":
