@@ -1,0 +1,33 @@
+///////////////////////////////////////////////////////////////////////////////////////
+usage: run_keywords.py [-h] [-p PDF] [-t TXT] [-s STOPWORDS] [-l RUS/ENG]
+                       [-o OUTPUT]
+
+Extracting keywords from a pdf or txt file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PDF, --pdf PDF     Path to pdf file, metavar = ""*.pdf""
+  -t TXT, --txt TXT     Path to txt file, metavar = ""*.txt""
+  -s STOPWORDS, --stopwords STOPWORDS
+                        Path to a file with a stopwords
+  -l RUS/ENG, --language RUS/ENG
+                        Specifies a language for a text or PDF document
+  -o OUTPUT, --output OUTPUT
+                        Path to output file
+
+///////////////////////////////////////////////////////////////////////////////////////
+usage: run_statistics.py [-h] [-p PDF] [-t TXT] [-s STOPWORDS] [-l RUS/ENG]
+                         [-o OUTPUT]
+
+Making a statistics about a pdf or txt file.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PDF, --pdf PDF     Path to pdf file, metavar = ""*.pdf""
+  -t TXT, --txt TXT     Path to txt file, metavar = ""*.txt""
+  -s STOPWORDS, --stopwords STOPWORDS
+                        Path to a file with a stopwords
+  -l RUS/ENG, --language RUS/ENG
+                        Specifies a language for a text or PDF document
+  -o OUTPUT, --output OUTPUT
+                        Path to output file

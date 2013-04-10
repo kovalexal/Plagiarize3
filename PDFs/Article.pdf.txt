@@ -1,0 +1,39 @@
+The world didn't end last Friday just like the world didn't end in the year 2000, with failing 
+computers deleting bank accounts and crashing airplanes. That doesn't mean the world isn't going to 
+end. It will. And if we keep our current operating systems, this is the exact date when all goes poof: 
+15:30:08 UTC on December 4th of the Year of Our Lord 292,277,026,596.
+That's when "the Unix time stamp will exceed the largest value that can be held in a signed 64-bit 
+integer." Unix is what powers most of the computing systems that are vital for human life on Earth, 
+from banks to medical life support systems to electric grids to satellites to the internet. And your 
+iPhone and Android phone too.
+
+Of course, none of the crap today will ever reach the year 292,277,026,596. Not because you forgot 
+to put on that stupid case on your phone but because Earth may not be around by then. The Sun 
+would have destroyed it about 7,900,000,000 years from now. That's when our home star will reach 
+its maximum diameter as a Red Giant, destroying Mercury, Venus and, most probably, Earth.
+
+However, don't worry about that End of the World either. Theoretically, we will be long gone by 
+then, according to the futuristic theories by theoretical physicist Michio Kaku. He says that, about 
+100,000 years to 1 million years from now, Humanity will be a Type III civilization on the 
+Kardashev scale. That means that our civilization will be "capable of interstellar travel, interstellar 
+communication, galactic engineering and galaxy-scale influence." And in five to 50 million years 
+humans will colonize the entire Milky Way, even if we never achieve faster-than-light interstellar 
+travel capabilities.
+
+At that point we will be able to harness the entire energy of the galaxy and your smartphone will 
+still be ticking thanks to its little Unix heart.
+
+So the Y292,277,026K will be real at one point. I'm almost certain that, by then, we would have 
+abandoned Unix at that point—but you never know. This mother was invented 43 years ago and it's 
+still the best, most solid operating system ever created. Good enough to survive the entire Universe 
+according to the Big Rip theory, which predicts everything will be over when the Universe reaches 
+an infinite scale 20 billion years from now.
+
+But then again, if the Chandra X-ray Observatory—powered by Unix!—is correct about the speed 
+in which galaxy clusters are moving away from us, the universe will not end then but much, much 
+later.
+
+Not that you or I will be around to see any of this, anyway. So—whatevs! Back to reading random 
+Wikipedia pages out of pure boredom. [Timeline of the Far Future]
+
+
