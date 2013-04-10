@@ -258,7 +258,7 @@ def progress_callback(blocks, block_size, total_size):
         sys.stdout.write("\r" + progress)
 
 
-def download(url, callback=None):
+def download(url, directory = ".", callback=progress_callback):
     """High level function, which downloads URL into tmp file in current
     directory and then renames it to filename autodetected from either URL
     or HTTP headers.
@@ -266,16 +266,23 @@ def download(url, callback=None):
     :return:  filename where URL is downloaded to
     """
 
+    print("Downloading:\n{0}\n".format(url))
+
     filename = filename_from_url(url) or "."
     # get filename for temp file in current directory
-    (fd, tmpfile) = tempfile.mkstemp(".tmp", prefix=filename+".", dir=".")
+    (fd, tmpfile) = tempfile.mkstemp(".tmp", prefix=filename+".", dir="./TMP/")
     os.close(fd)
     os.unlink(tmpfile)
 
-    (tmpfile, headers) = urllib.urlretrieve(url, tmpfile, callback)
+    try:
+        (tmpfile, headers) = urllib.urlretrieve(url, tmpfile, callback)
+    except:
+        print("Can`t download!\n{0}\n".format(url))
+        return ""
     filenamealt = filename_from_headers(headers)
     if filenamealt:
         filename = filenamealt
+    filename = directory + "/" + filename
     # add numeric ' (x)' suffix if filename already exists
     if os.path.exists(filename):
         filename = filename_fix_existing(filename)
