@@ -1,5 +1,6 @@
 import re
 import sys
+import operator
 
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 import split
@@ -85,7 +86,8 @@ def getKeyPhrases(text, garbage, lemmatizer = None):
 
 	keywords_quantity = int(len(keywords) / 3)
 
-	keyPhrases = sorted(keywords.items(), key=lambda x: (x[1],x[0]), reverse=True)
+	#keyPhrases = sorted(keywords.items(), key=lambda x: (x[1],x[0]), reverse=True)
+	keyPhrases = sorted(iter(keywords.items()), key=operator.itemgetter(1), reverse=True)
 	if (keywords_quantity == 0):
 		return keyPhrases
 	else:

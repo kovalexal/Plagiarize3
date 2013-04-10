@@ -18,7 +18,7 @@ PROGRAM_START = time()
 parser = argparse.ArgumentParser(description = "Making a statistics about a pdf or txt file.")
 parser.add_argument("-p", "--pdf", nargs = 1, help = "Path to pdf file" ''', metavar = "\"*.pdf\""''')
 parser.add_argument("-t", "--txt", nargs = 1, help = "Path to txt file" ''', metavar = "\"*.txt\""''')
-parser.add_argument("-g", "--garbage", nargs = 1, help = "Path to a file with a garbage")
+parser.add_argument("-s", "--stopwords", nargs = 1, help = "Path to a file with stopwords")
 parser.add_argument("-l", "--language", nargs = 1, help = "Specifies a language for a text or PDF document", metavar = "RUS/ENG")
 parser.add_argument("-o", "--output", nargs = 1, help = "Path to output file")
 
@@ -43,10 +43,10 @@ if (args.txt != None):
 else:
 	input_file = args.pdf[0] + ".txt"
 
-if (args.garbage != None):
-	garbage_file = args.garbage[0]
+if (args.stopwords != None):
+	stopwords_file = args.stopwords[0]
 else:
-	garbage_file = ""
+	stopwords_file = ""
 
 if (args.output != None):
 	output_file = args.output[0]
@@ -69,10 +69,10 @@ else:
 	exit(0)
 
 print("input_file =", input_file)
-print("garbage_file =", garbage_file)
+print("stopwords_file =", stopwords_file)
 print("output_file =", output_file)
 #colour_print("input_file = {0}".format(input_file), back = Back.GREEN)
-#colour_print("garbage_file = {0}".format(garbage_file), back = Back.GREEN)
+#colour_print("stopwords_file = {0}".format(stopwords_file), back = Back.GREEN)
 #colour_print("output_file = {0}".format(output_file), back = Back.GREEN)
 
 
@@ -104,20 +104,20 @@ end_time = time()
 print("Parsing TXT took {0:.3f}".format(end_time - start_time), "seconds")
 
 #Getting words for deleting
-if (garbage_file == ''):
-	garbage = set()
+if (stopwords_file == ''):
+	stopwords = set()
 	pass
 else:
-	#print("\nStarted parsing TXT with garbage, wait for a while...")
+	#print("\nStarted parsing TXT with stopwords, wait for a while...")
 	start_time = time()
-	garbage = split.get_list(garbage_file, enableComments = True)
+	stopwords = split.get_list(stopwords_file, enableComments = True)
 	end_time = time()
-	print("\nParsing TXT with garbage took {0:.3f}".format(end_time - start_time), "seconds")
-	garbage = set(garbage)
+	print("\nParsing TXT with stopwords took {0:.3f}".format(end_time - start_time), "seconds")
+	stopwords = set(stopwords)
 
 print("\nStarted getting keyword phrases")
 start_time = time()
-keywords = keywords.getKeyPhrases(text, garbage, lemmatizer = lemmatizer)
+keywords = keywords.getKeyPhrases(text, stopwords, lemmatizer = lemmatizer)
 end_time = time()
 print("Getting keyword phrases took {0:.3f}".format(end_time - start_time), "seconds")
 
