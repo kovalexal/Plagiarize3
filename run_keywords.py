@@ -81,7 +81,7 @@ if (args.pdf != None):
 	pdf = args.pdf[0]
 	start_time = time()
 	try:
-		retcode = subprocess.call(["python", "./pdfImport.py", pdf, pdf + ".txt"])
+		retcode = subprocess.call(["python", "./pdf_import.py", pdf, pdf + ".txt"])
 		if (retcode != 0):
 			#print("Error while parsing PDF file!")
 			colour_print("Error while parsing PDF file!", core = Fore.RED)

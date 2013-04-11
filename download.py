@@ -266,7 +266,10 @@ def download(url, directory = ".", callback=progress_callback):
     :return:  filename where URL is downloaded to
     """
 
-    print("Downloading:\n{0}\n".format(url))
+    if directory.endswith("/"):
+        directory = directory[:-1]
+
+    print("\nDownloading:\n{0}\n".format(url))
 
     filename = filename_from_url(url) or "."
     # get filename for temp file in current directory
