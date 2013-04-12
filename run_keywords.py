@@ -53,7 +53,7 @@ if (args.output != None):
 else:
 	output_file = ""
 
-lemmatizer = 0
+lemmatizer = None
 
 languages = set({"RUS", "ENG"})
 if (args.language != None and (args.language[0] in languages)):
@@ -64,8 +64,6 @@ if (args.language != None and (args.language[0] in languages)):
 		lemmatizer = stem.lemmatize_en
 	else:
 	    lemmatizer = None
-else:
-	lemmatizer = None
 
 print("input_file =", input_file)
 print("stopwords_file =", stopwords_file)

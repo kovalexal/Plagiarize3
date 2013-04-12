@@ -50,7 +50,7 @@ except ImportError:
 url_home          = "http://www.google.%(tld)s/"
 url_search        = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&btnG=Google+Search"
 url_next_page     = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&start=%(start)d"
-url_search_num    = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&btnG=Google+Search"
+url_search_num    = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&num=%(num)d&btnG=Google+Search"
 url_next_page_num = "http://www.google.%(tld)s/search?hl=%(lang)s&q=%(query)s&start=%(start)d"
 
 #Sites to block
@@ -91,7 +91,21 @@ def get_page(url):
     request.add_header('User-Agent',
                        'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)')
     cookie_jar.add_cookie_header(request)
-    response = urllib.request.urlopen(request)
+
+    '''
+    Asking to wait for an internet connection to be established or exiting if needed
+    '''
+    got_result = 0
+    while not got_result:
+        try:
+            response = urllib.request.urlopen(request)
+            got_result = 1
+        except:
+            print("No internet connection found!\n")
+            ans = input("Do you want to try again? (\"yes\" or \"no\"): ")
+            if (ans != "yes"):
+                exit(0)
+
     cookie_jar.extract_cookies(response, request)
     html = response.read()
     response.close()
@@ -168,6 +182,8 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
     query = urllib.parse.quote_plus(query)
 
     # Grab the cookie from the home page.
+    #time.sleep(pause)
+    #print(url_home % vars())
     get_page(url_home % vars())
 
     # Prepare the URL of the first request.
@@ -187,6 +203,7 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
 
         # Parse the response and process every anchored URL.
         soup = BeautifulSoup.BeautifulSoup(html)
+
         anchors = soup.findAll('a')
         for a in anchors:
 
@@ -217,10 +234,42 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
         else:
             url = url_next_page_num % vars()
 
-def find(query, results):
+def find(query_, tld = "com", lang = "en", filetype = "", pause = 2.0):
+    """
+    Trying to get a quantity of responces for a query, searching for results and returning result list
+    """
+    if (filetype == ""):
+        query = urllib.parse.quote_plus(query_)
+    else:
+        query = urllib.parse.quote_plus(query_ + " filetype:" + filetype)
+
+    get_page(url_home % vars())
+    url = url_search % vars()
+    time.sleep(pause)
+    html = get_page(url)
+
+    soup = BeautifulSoup.BeautifulSoup(html)
+    stats = soup.find(id = "resultStats")
+    if (len(stats) == 0):
+        print("No results were found!\nExiting...")
+        exit(0)
+    stat = stats.get_text()
+    resultStats = stat.split(" ")[1]
+    results = input("Found about {0} results.\nHow much to process? (0 - EXIT): ".format(resultStats))
+    results = int(results)
+    if (results == 0):
+        print("Exiting...")
+        exit(0)
+
+    query = ""
+    if (filetype == ""):
+        query = query_
+    else:
+        query = query_ + " filetype:" + filetype
+
     got_results = 0
     urls = []
-    for url in search(query):
+    for url in search(query_ + " filetype:pdf"):
         if (got_results >= results):
             break
         urls.append(url)
@@ -230,7 +279,8 @@ def find(query, results):
 # When run as a script, take all arguments as a search query and run it.
 if __name__ == "__main__":
     import sys
-    query = ' '.join(sys.argv[1:])
+    query = ' '.join(sys.argv[1])
     if query:
-        for url in search(query, stop=20):
+        urls = find(query, filetype = "pdf")
+        for url in urls:
             print(url)

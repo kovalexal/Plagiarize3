@@ -294,6 +294,7 @@ def download(url, directory = ".", callback=progress_callback):
     shutil.move(tmpfile, filename)
 
     #print headers
+    print("\nSaved in {0}".format(filename))
     return filename
 
 

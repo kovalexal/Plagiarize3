@@ -1,3 +1,6 @@
+Detection of plagiarism 
+
+
 ///////////////////////////////////////////////////////////////////////////////////////
 usage: run_keywords.py [-h] [-p PDF] [-t TXT] [-s STOPWORDS] [-l RUS/ENG]
                        [-o OUTPUT]
