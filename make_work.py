@@ -99,4 +99,3 @@ for f in files:
     if f.processed == 1:
         f.words = [(word, md5sum_str(word)) for word in get_list(f.path_txt, enableComments = False, sorted = False, lowerCase = True)]
 
-

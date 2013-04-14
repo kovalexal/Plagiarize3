@@ -6,6 +6,8 @@ import numbers
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 import split
 
+KEYWORDS_MAX = 10
+
 def isnumber(num):
     '''
     Checks if num is a number
@@ -105,5 +107,7 @@ def getKeyPhrases(text, garbage, lemmatizer = None):
 	keyPhrases = sorted(iter(keywords.items()), key=operator.itemgetter(1), reverse=True)
 	if (keywords_quantity == 0):
 		return keyPhrases
+	elif (keywords_quantity > KEYWORDS_MAX):
+		return keyPhrases[0:KEYWORDS_MAX]
 	else:
 		return keyPhrases[0:keywords_quantity]
