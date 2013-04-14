@@ -1,9 +1,24 @@
 import re
 import sys
 import operator
+import numbers
 
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 import split
+
+def isnumber(num):
+    '''
+    Checks if num is a number
+    '''
+    try:
+        if '.' in num:
+            float(num)
+        else:
+            int(num)
+        #float(s) if '.' in s else int(s)
+        return True
+    except ValueError:
+        return False
 
 def generateCandidateKeywords(text, garbage, lemmatizer = None):
 	'''
@@ -18,7 +33,7 @@ def generateCandidateKeywords(text, garbage, lemmatizer = None):
 			if (lemmatizer != None):
 				word = lemmatizer(word)
 
-			if (word in split.delimeters or word in garbage):
+			if (word in split.delimeters or word in garbage or isnumber(word) == True):
 				if (len(tmplist) != 0):
 					candidate_keywords.append(tmplist)
 				tmplist = []

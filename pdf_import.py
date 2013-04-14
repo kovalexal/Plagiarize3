@@ -7,6 +7,7 @@ from pdfminer.pdfinterp import PDFResourceManager, process_pdf
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from cStringIO import StringIO
+from pdfminer.pdfparser import PDFSyntaxError
 
 def convert_pdf(path):
     '''
@@ -20,7 +21,10 @@ def convert_pdf(path):
     device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
 
     fp = file(path, 'rb')
-    process_pdf(rsrcmgr, device, fp)
+    try:
+        process_pdf(rsrcmgr, device, fp)
+    except PDFSyntaxError:
+        exit(1)
     fp.close()
     device.close()
 
@@ -28,7 +32,7 @@ def convert_pdf(path):
     retstr.close()
     return str
 
-def getTxt(pathin, pathout):
+def get_txt(pathin, pathout):
     '''getTxt(name)
     Getting a txt file from a string str
     '''
@@ -36,6 +40,7 @@ def getTxt(pathin, pathout):
     file = open(pathout, "w")
     file.write(str)
     file.close()
+    return str
   
 if __name__ == "__main__":
-    getTxt(sys.argv[1], sys.argv[2])
+    get_txt(sys.argv[1], sys.argv[2])
