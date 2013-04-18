@@ -1,0 +1,803 @@
+Journal of Universal Computer Science, vol. 13, no. 10 (2007), 1471-1483
+submitted: 12/6/06, accepted: 24/10/06, appeared: 28/10/07 © J.UCS
+
+Machine Learning-Based Keywords Extraction for
+Scientiﬁc Literature
+
+Chunguo Wu
+(College of Computer Science and Technology, Jilin University, Key Laboratory
+of Symbol Computation and Knowledge Engineering of Ministry of Education
+Changchun 130012, China
+and
+The Key Laboratory of Information Science & Engineering of Railway
+Ministry, The Key Laboratory of Advanced Information Science and Network
+Technology of Beijing, Beijing Jiaotong University
+Beijing 100044, China
+wucg@jlu.edu.cn)
+
+Maurizio Marchese
+(Department of Information and Communication Technology University of
+Trento, Via Sommarive 14, 38050 - Povo (TN), Italy
+maurizio.marchese@unitn.it)
+Jingqing Jiang
+(College of Computer Science and Technology, Jilin University, Key Laboratory
+of Symbol Computation and Knowledge Engineering of Ministry of Education
+Changchun 130012, China
+and
+College of Mathematics and Computer Science, Inner Mongolia University for
+Nationalities, Tongliao 028043, China
+tljjq@263.net)
+Alexander Ivanyukovich
+(Department of Information and Communication Technology University of
+Trento, Via Sommarive 14, 38050 - Povo (TN), Italy
+a.ivanyukovich@dit.unitn.it)
+
+Yanchun Liang
+(College of Computer Science and Technology, Jilin University, Key Laboratory
+of Symbol Computation and Knowledge Engineering of Ministry of Education
+Changchun 130012, China
+ycliang@jlu.edu.cn)
+
+Abstract: With the currently growing interest in the Semantic Web, keywords/metad-
+ata extraction is coming to play an increasingly important role. Keywords extraction
+from documents is a complex task in natural languages processing. Ideally this task con-
+cerns sophisticated semantic analysis. However, the complexity of the problem makes
+
+1472
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+current semantic analysis techniques insuﬃcient. Machine learning methods can sup-
+port the initial phases of keywords extraction and can thus improve the input to further
+semantic analysis phases. In this paper we propose a machine learning-based keywords
+extraction for given documents domain, namely scientiﬁc literature. More speciﬁcally,
+the least square support vector machine is used as a machine learning method. The
+proposed method takes the advantages of machine learning techniques and moves the
+complexity of the task to the process of learning from appropriate samples obtained
+within a domain. Preliminary experiments show that the proposed method is capable
+to extract keywords from the domain of scientiﬁc literature with promising results.
+
+Key Words: keywords extraction, metadata extraction, support vector machine, ma-
+chine learning
+
+Category: H.3.7, H.5.4
+
+1
+
+Introduction
+
+Scientists have communicated and codiﬁed their ﬁnding in a relatively orderly,
+well deﬁned way since 17th century through the use of books, serial literature
+(journals), intellectual property right documents (patents). But many new chan-
+nels and usages of communication are rapidly developing: electronic publishing,
+digital libraries, electronic proceedings, and more recently blogs and scientiﬁc
+news streaming are rapidly expanding the amount of available scientiﬁc/scholarly
+digital content related to research and innovation. Recently, we have also wit-
+nessed a ma jor shift in the landscape of publishing: the number of open access
+journals is rising steadily, and new publishing models are rapidly evolving to test
+new ways to increase readership and access.
+In a study carried out in 2003 at the University of California at Berkeley
+[Lyman et al. 2003], it has been estimated that the world produces between 1
+and 2 exabytes (109 GB) of unique information per year, which is roughly 250
+megabytes for every man, woman, and child on earth. Printed documents of all
+kinds comprise only .003% of the total. Digital format is rapidly becoming the
+universal medium for information storage and sharing.
+Scientists beneﬁt much from such quantity of available scholarly resources.
+However, like all other people, they are ﬂooded with content and ﬁnd it diﬃcult
+to search and organize it with traditional methods. The need to provide eﬀective
+IT platforms for managing and searching such a variety and quantity academic
+content both on the Web and on local/private repositories (digital libraries) is
+thus a crucial issue for the advance of scientiﬁc knowledge.
+A solution proposed within the Semantic Web initiative consists of enriching
+each digital resource with associated semantics. This means that each digital
+resource needs to be annotated with terms (i.e. keywords) describing concepts
+mainly derived from a rich semantic model (i.e. an ontology) of the domain the
+resource is about. It is clear that, in order to scale to the size of the content
+under consideration, this approach needs to be supported by appropriate tools
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+1473
+
+that assist either automatically or semi-automatically the semantic annotation
+process.
+Researchers have been aware of the importance of automatic extraction of se-
+mantic information from digital resources and diﬀerent methodologies have been
+proposed to fulﬁll this task. The existing approaches include numerous metadata
+extraction, document summarization and keywords extraction techniques. Han
+et al. (2003) proposed an approach to automatically extract metadata of scien-
+tiﬁc literatures [Han et al. 2003] and the approach has been applied in the Cite-
+Seer.IST pro ject1 . Kiyavitskaya et al. (2005) proposed semi-automatic semantic
+annotation approach [Kiyavitskaya et al. 2005] based on techniques and technolo-
+gies traditionally used in software analysis and reverse engineering. Daume et al.
+(2005) introduced word and phrase alignment-based approaches for document
+summarization [Daume and Marcu 2005]. Some studies have been performed to
+extract keywords, but not speciﬁc for scientiﬁc literatures. Jos´e Luis Mart´inez-
+Fern´andez (2003) et al. focused on the automatic keywords extraction for news
+characterization by using several linguistic techniques to improve the text-based
+information retrieval [Mart et al. 2004].
+These eﬀorts, and related work, can sustain and improve a number of mod-
+ern scientiﬁc/scholarly content services. Both commercial ones like Chemical
+Abstracts Service(cid:2)2 for chemistry-related articles, Web of Knowledge(cid:2)3 from
+ISI-Thomson and Scopus(cid:2)4 from Elsevier B.V.; as well as very popular vertical
+communities services such as: CiteSeer.IST, DBLP5 , and more recently Google
+Scholar6 .
+In this paper we propose a domain-oriented machine learning-based keywords
+extraction for scientiﬁc literature. In Section 2 we describe our motivating use-
+case where keywords extraction methods and tools are relevant. In Section 3
+we present the proposed method based on one of the machine learning meth-
+ods, namely the least square support vector machines (LS-SVM). In Section 4
+we probe our proposed method on a sample of scientiﬁc literature documents.
+Conclusion and future work are given in Section 5.
+
+2 Motivating case study: keywords extractions in a semantic
+content management system
+
+In our current work, the need for automatic tools for keywords extractions comes
+within the development, carried out at the University of Trento, of a semantic
+
+1 http://citeseer.ist.psu.edu/
+2 http://www.cas.org
+3 http://www.isinet.com
+4 http://www.scopus.com
+5 http://dblp.uni-trier.de/
+6 http://scholar.google.com/
+
+1474
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+content management system for scientiﬁc literature. In this system, initially sci-
+entiﬁc documents are located on the Internet and downloaded to local storage.
+Then they are converted to textual format. Due to the speciﬁcs of text represen-
+tation in PostScript and PDF formats output textual information may contain
+diﬀerent artifacts that do not belong to meaningful content. These artifacts can
+make further information processing less eﬃcient and can have subsequent neg-
+ative impact on ﬁnal results quality.
+Several methods have been applied to ﬁnd and eliminate these artifacts thus
+assuring the necessary quality level:
+
+– Partial recognition of text structure;
+
+– Pages order detection;
+
+– Pages header/footer detection and elimination;
+
+– Document content and index sections detection and elimination;
+
+– Corrections of the partially recognized text structure (beginnings of ab-
+stract, keywords, introduction, conclusion, acknowledgement and reference
+sections).
+
+Each of the outlined methods is based on statistical data analysis techniques,
+so they do not require any extra information and ensure high processing speed.
+Further information processing includes metadata extraction and subsequent
+metadata correction steps.
+Correspondingly we have divided all information processing tasks to sev-
+eral ma jor modules: Parsers, Pre-processors, Metadata Extractors and Post-
+Processors. The part of the semantic content management system architecture
+connected to the information processing tasks is represented in Fig. 1. The over-
+all architecture can be described as a “conveyor chain”, where each module is
+a cluster (“cell”) that spreads corresponding tasks to available distributed pro-
+cessing facilities. The heart of the system is the “distributed ﬁle system”, which
+performs functions of data storage network. Information ﬂow is organized in the
+way that modules never communicate directly. Instead they operate through
+distributed ﬁle system only. This kind of architecture fulﬁlls three ma jor goals:
+easy functional extensibility, high performance and scalability.
+Because of the modules independency it is possible to easily integrate dif-
+ferent keywords extraction techniques, like the one presented in this paper, into
+the existing information ﬂow chain.
+
+3 Machine learning-based keywords extraction
+
+The proposed method consists of three parts: construction of a keyword database,
+selection of learning samples and training of a learning machine. Speciﬁcally, the
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+1475
+
+Figure 1: Semantic Content Management System architecture
+
+LS-SVM is used as a model for machine learning. The keyword database is
+constructed from existing documents in a speciﬁc scientiﬁc domain with given
+keywords. Learning samples are drawn from documents with given keywords
+based on the obtained keyword database. Then the LS-SVM is trained using the
+samples drawn in the second part. After this process is completed we can use
+the trained learning machine to extract keywords for unseen documents in the
+same domain.
+
+3.1 Constructions of keyword database and drawing of learning
+samples
+
+Keywords database construction is grounded on the data prepared by the dis-
+tributed semantic content management system designed at the University of
+Trento. After the Pre-Processors module (see Fig. 1), the scientiﬁc documents
+have already enough information for their classiﬁcation into two ma jor cate-
+gories: with and without keywords indicated by document authors. Firstly we
+process all documents with indicated keywords: we thus collect all the given
+keywords and populated the keywords database with their unique set. For ex-
+ample, if a line in a pre-processed plain-text ﬁle is “keywords: heuristic search;
+dynamic programming; markov decision problems ” then the keywords ”heuristic
+
+1476
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+search”, ”dynamic programming” and “markov decision problems” are put into
+the keyword database. These items collected in the keyword database are called
+candidate keywords.
+Moreover, we observe that the relevance of a keyword can be roughly esti-
+mated by its frequency in four parts of the scientiﬁc document: title, abstract,
+body and conclusion (discussion/summary). For a given document, the title and
+abstract are relatively easy to be identiﬁed with heuristic rules implemented in
+the Metadata Extractors module of our system, since usually the title occupies
+the ﬁrst lines of the document and the abstract follows the word “Abstract”.
+It is a bit more diﬃcult to determine the conclusion part, because there are
+some counterparts in scientiﬁc literature document, e.g., discussion and sum-
+mary. Usually we consider the section before the bibliography/reference or ac-
+knowledgement (if available) as conclusion part, no matter what the section
+title is. All sections between abstract or keyword (if available) and conclusion
+are considered as the body.
+Inspired by this observation, we design our samples as 5-dimensional vectors:
+(nT itle, nAbstract, nBody , nC onclusion, isK eyword)T , where nTitle, nAbstrac-
+t, nBody, and nConclusion are the times that a candidate keyword k appears
+in title, abstract, body and conclusion of a scientiﬁc literature document p, re-
+spectively, and isKeyword is a binary variable. If the set of given keywords of
+document p contains the candidate keyword k, the corresponding isKeyword is
+set to +1; otherwise, the isKeyword is set to -1. In order to construct the training
+and testing samples, we scan each line in the plain-text ﬁle for each item in the
+keyword database and count the times that the term appears in each part to
+compute respectively nTitle, nAbstract, nBody, and nConclusion. Hence, if the
+number of items in keyword database is n and the number of documents in the
+ﬁrst category (with keywords) is m, then n -by-m samples can be drawn.
+
+3.2 Training of learning machines
+
+Machine learning methods have demonstrated their relevance, especially, in the
+ﬁelds where the a-priori models are diﬃcult to construct due to uncertainty or
+complexity. With the emergence of the second generation of statistical learning
+theory (Vapnik, 1998) [ Vapnik 1998], many new powerful models based on
+support vector machine have been proposed in the machine learning domain:
+Joachims (1999) et al. proposed the S V M Light , which is one of the most popular
+SVM [ Vapnik 1999]. Platt (1999) proposed sequential minimal optimization
+(SMO) to train SVM, which enabled to analytically compute the coeﬃcient from
+series of the smallest quadratic programming problems [Platt 1999]. Suykens
+(1999 and 2000) et al. proposed Least squares support vector machine (LS-
+SVM), which was spread in engineering ﬁeld in a short time due to its simplicity
+and eﬃciency [Suykens and Vandewalle 1999] [Suykens et al. 2000]. Wu (2006) et
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+1477
+
+al. proposed an adaptive iterative training algorithm of LS-SVM, which makes
+LS-SVM can be trained iteratively and remain the sparseness of support vectors
+[Jiang et al. 2006]. Jiang (2005) et al. proposed a classiﬁcation method based on
+function regression [Jiang et al. 2005], which can be used to implement multi-
+classiﬁcation eﬃciently and is entirely diﬀerent with traditional methods for
+multi-classiﬁcation (1-vs-1 or 1-vs-all) [Angulo et al. 2006] [Anguita et al. 2004]
+[Kressel 1999]. In this paper this regression-based classiﬁcation method is used
+to verify the keywords extraction approach.
+The regression-based classiﬁcation method proposed by Jiang (2005) et al. is
+introduced brieﬂy in the following, from [Jiang et al. 2005]:
+Let us consider a given training set of N samples {xi , yi} with the i th input
+vector xi ∈ Rn and the i th output target yi ∈ R. The aim of support vector
+machines model is to construct the decision function takes the form:
+
+f (x, w) = wT ϕ(x) + b
+
+(1)
+
+In least squares support machines for function regression the following opti-
+⎧⎪⎨
+mization problem is formulated
+N(cid:6)
+2 (cid:3) w (cid:3)2 +γ
+J (w, e) = 1
+⎪⎩min
+w ,e
+i=1
+s.t. yi = wT ϕ(xi ) + b + ei , (i = 1, ..., N )
+
+(2)
+
+e2
+i
+
+where γ is a predetermined parameter to balance the precisions between
+learning and generalization.
+L(w, b, e, α) = J (w, e) − N(cid:7)
+i=1
+with Lagrange multipliers αi . The solution is given by the following set of
+linear equations
+(cid:9)
+(cid:8)
+(cid:9)
+(cid:9) (cid:8)
+(cid:8)
+0
+0
+b
+1T
+1 Ω + γ−1I
+y
+α
+
+αi {wT ϕ(xi ) + b + ei − yi}
+
+(3)
+
+(4)
+
+=
+
+where
+
+(5)
+Ωkj = ϕ(xk )T ϕ(xj ) = ψ(xk , xj ) (k , j = 1, ..., N )
+Let A = Ω + γ−1 I . Because A is a symmetric and positive-deﬁnite matrix,
+A−1 exists. Solving the set of linear Eqs.(6), one can obtain the solution
+1T A−1 y
+α = A−1 (y − b1)
+1T A−11
+Substituting w in Eq. (1) with its expression of α [?], we have
+
+b =
+
+(6)
+
+1478
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+N(cid:7)
+
+(7)
+
+f (x, w) = y (x) =
+αiK (x, xi ) + b
+i=1
+The kernel function K (·) is chosen as a radial basis function
+K (x, xi ) = exp{− (cid:3) x − xi (cid:3)2 /(2σ2 )}
+where σ is a predetermined constant, called as kernel width.
+The steps of the regression-based classiﬁcation method for multi-category
+problems are as follows [Jiang et al. 2005]:
+Step 1. Set class-label for each class. The class-label is usually set as decimal
+integer, such as i = 1, 2, ..., n.
+Step 2. Solve the set of linear Eqs. (4) to get the solutions of αi and b.
+Step 3. Put the solutions of αi and b into Eq. (7), and obtain the regression
+function f (x).
+When the value of the regression function f (x) is in the speciﬁed region
+of class-label for a given sample x, the sample x is classiﬁed by the regression
+function f (x) correctly.
+
+(8)
+
+4 Preliminary experiments
+
+To probe the validity of the proposed method, we selected randomly 332 scien-
+tiﬁc literature documents with given keywords from our document bibliography
+database (both DBLP and University of Trento repositories). From these doc-
+uments, totally 1313 candidate keywords have been collected and put into the
+keyword database. By using these scientiﬁc literature documents with given key-
+words and candidate keywords, we draw our samples according to the method
+proposed in 3.1. In these samples there are ca. 11% of positive samples and ca.
+89% of negative samples.
+With these original samples, 10 experiments of training and testing are per-
+formed. The running parameters (γ and σ ) are selected as 5000 and 0.01 with
+10-fold cross-validation in the space of [1, 60000]-by-[0.01, 100] and the step sizes
+for γ and σ are 10 and 0.01, respectively. The results are listed in Table 1, where
+CR(+) and CR(-) represent the correct rates of samples in positive and negative
+classes, respectively, and CR represents the correct rate of the whole samples.
+Denote a sample as si and the training or testing sample set as S , the formulas
+for computation of CR(+), CR(-) and CR are as follows:
+| {si | si ∈ S + , f (si ) > 0} |
+| S + |
+S + = {si | si ∈ S, (si )5 = +1}
+
+CR(+) =
+
+(9)
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+1479
+
+training
+(%)
+
+Table 1: Training and testing results of original samples
+CT
+CR(-)
+CR(+)
+No.
+94.2667
+99.7347
+54.2936
+1
+94.0000
+99.8496
+48.3871
+2
+3
+55.5891
+99.8876
+95.0000
+95.3667
+99.7759
+58.8235
+4
+93.9333
+99.8117
+48.6957
+5
+94.1000
+99.8873
+48.6726
+6
+7
+55.3517
+99.8504
+95.0000
+94.4667
+99.8118
+53.0612
+8
+94.6667
+99.7380
+53.3537
+9
+94.1667
+99.6601
+52.8409
+10
+average
+52.9069
+99.8007
+94.4967
+88.9000
+98.8798
+05.9006
+1
+88.4667
+99.3233
+03.5294
+2
+3
+02.8902
+98.7566
+87.7000
+87.3000
+98.3755
+04.2493
+4
+87.7667
+98.8289
+04.8159
+5
+88.9667
+98.6916
+08.9231
+6
+7
+03.6517
+99.1679
+87.8333
+88.7333
+99.3992
+04.4510
+8
+88.0333
+98.8333
+04.3732
+9
+88.1333
+98.9850
+03.2353
+10
+average
+04.6020
+98.9241
+88.1833
+
+testing
+(%)
+
+CR(−) =
+
+| {si | si ∈ S− , f (si ) ≤ 0} |
+| S− |
+= {si | si ∈ S, (si )5 = −1}
+S−
+| {si | si ∈ S+ , f (si ) > 0} ∪ {si | si ∈ S− , f (si ) ≤ 0} |
+| S+ | S− |
+
+CR =
+
+(10)
+
+(11)
+
+where (si )5 is the class label for the i th sample in set S .
+Generally, we could obtain an LS-SVM with a higher precision. However, as
+shown in Table 1, it can be seen that the unbalanced data (much more negative
+samples than positive ones) deteriorates seriously the precision of positive sam-
+ples in the testing phase. To reduce this disadvantage, the positive samples are
+duplicated 8 times to balance the ratio of positive and negative samples accord-
+ing to Murphey (2004) [Murphey and Guo 2004]. With the balanced samples,
+
+1480
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+training
+(%)
+
+Table 2: Training and testing results of balanced samples
+CT
+CR(-)
+CR(+)
+No.
+81.1667
+87.7193
+74.7694
+1
+82.3000
+88.8140
+75.9235
+2
+3
+74.6179
+87.5585
+81.0667
+82.8000
+88.9477
+76.5615
+4
+81.6667
+86.9831
+76.5246
+5
+81.7000
+86.9128
+76.5563
+6
+7
+76.4045
+88.8366
+82.5667
+81.9667
+90.1617
+73.9446
+8
+82.0333
+89.5024
+74.8858
+9
+83.3000
+90.7133
+76.0238
+10
+average
+75.6212
+88.6149
+82.0567
+75.7333
+77.7241
+73.8710
+1
+77.8000
+81.3232
+74.4997
+2
+3
+72.5581
+80.1338
+76.3333
+75.4667
+78.4939
+72.5426
+4
+75.5333
+76.4466
+74.6571
+5
+75.8000
+79.1472
+72.4483
+6
+7
+76.7320
+78.7755
+77.7333
+75.0333
+80.9753
+69.4301
+8
+75.0333
+78.3650
+72.0430
+9
+76.4667
+80.4502
+72.1799
+10
+average
+73.0962
+79.1835
+76.0933
+
+testing
+(%)
+
+the above experiments are repeated and the results are listed in Table 2. The
+meanings of symbols used in this table are the same as those in Table 1. As
+shown in Table 2, by introducing the data balance method, the correct rates of
+positive samples are improved about or more than 20 times, although the whole
+correct rates are pulled somewhat down (on the average 12%). Maybe this is
+what we have to accept for the lack of more eﬃcient methods of data balance.
+To demonstrate the generalization performance of the proposed method, we
+randomly selected 116 literatures without given keywords from the same docu-
+ment bibliography repository. Because of the lack of given keywords, the samples
+construction from these literatures are 4-dimensional vectors, i.e.,
+
+(nT itle, nAbstract, nBody , nC onclusion)T
+
+and the binary component, isKeyword, is omitted. We present the extracted
+keywords of 10 documents with corresponding titles in Table 3.
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+1481
+
+2
+
+3
+
+4
+
+Table 3: Generalization Performance for literatures without given keywords
+No. Title and extracted keywords
+Title Querying Semistructured
+1
+Heterogeneous Information
+Keywords Semantics; query;language; meaning
+Title Eﬃcient and Flexible Location
+Management Techniques for
+Wireless Communication Systems
+Keywords Graphical; communication;
+information; search
+Title Querying the World Wide Web
+Keywords world wide web; query; language;
+distributed
+Title On Using a Manhattan
+Distance-like Function for Robot
+Motion Planning on a Non-Uniform
+Grid in Conﬁguration Space
+Keywords Conﬁguration; extensions;
+representation; constraints
+Title Genetic Algorithms Tournament
+Selection and the Eﬀects of Noise
+Keywords genetic algorithms; sampling; noise;
+evaluation
+Title Bayesian Interpolation
+Keywords complexity; inference;
+approximation; embodied
+Title Acting Optimally in Partially
+Observable Stochastic Domains
+Keywords stochastic; belief; search;
+markov decision planning
+Title Deriving Production Rules for
+Incremental View Maintenance
+Keywords stochastic; maintenance;
+information; logic
+Title Topography And Ocular
+Dominance: A Model Exploring
+Positive Correlations
+Keywords Logic; pattern;learning; distributed
+
+7
+
+6
+
+5
+
+8
+
+9
+
+5 Conclusions and future work
+
+In this paper we propose an oﬄine method for keywords extraction from scientiﬁc
+literature documents. After collecting a proper keyword database, the proposed
+method can be used to extract keywords from scientiﬁc literature documents
+within a given domain. This method can also be easily extended to online adap-
+tive methods by using adaptive online learning approaches of SVM. When the
+proposed method is extended to online adaptive version, we expect improvements
+due to the distributed actions of users interacting with the learning system.
+Although the simulated experiments show that the proposed method is prom-
+
+1482
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+ising, the data unbalance is an inevitable problem in the training process of
+learning machines by suing this approach. To reduce the eﬀect of data unbalance,
+we expect to obtain better results, than those obtained here, using the current
+data balance procedure for increasing the number of samples of under-sampled
+category, which is also one of our incoming work directions.
+What should be pointed out is that the quality of initial metadata identiﬁca-
+tions, i.e. identiﬁcation of title, abstract, conclusion, acknowledgement, appendix
+and reference sections, is crucial for improving the eﬃciency and accuracy of the
+proposed method for keywords extraction. Current work in regard to the de-
+velopment of a semantic content management system is aiming to provide such
+quality initial metadata automatic extraction. Moreover, we are working on ex-
+ploring other keywords extraction strategies and methods and compare their
+results with the proposed approach.
+
+Acknowledgment
+
+The authors would like to thank for the support of the European Commission for
+the Erasmus Mundus programme and the pro ject of TH/Asia Link/010 (111084),
+the National Natural Science Foundation of China (60673023, 60433020), the
+science-technology development pro ject of Jilin Province of China (20050705-2),
+the doctoral funds of the National Education Ministry of China (20030183060),
+the graduate innovation lab of Jilin University (503043), and “985”pro ject of
+Jilin University.
+
+References
+
+[Lyman et al. 2003] Lyman, Peter, Varian,H. R.:“How Much Information”;(2003).
+http://www.sims.berkeley.edu/how-much-info- 2003on15march2006.
+[Han et al. 2003] Han, H. , Giles, C. L., Manavoglu, E. , Zha,H. Y., Zhang,Z. Y.:
+“Automatic document metadata extraction using support vector machines”; Pro-
+ceedings of the 2003 Joint Conference on Digital Libraries, Houston, Texas, USA,
+(2003), 37-48.
+[Kiyavitskaya et al. 2005] Kiyavitskaya, N., Zeni, N., Cordy, J. R., Mich, L., Mylopou-
+los, J.: “Semi-Automatic semantic annotations for web documents”; Proc. SWAP
+2005, 2nd Italian Semantic Web Workshop, Trento, Italy, 2005.
+[Daume and Marcu 2005] Daume, H., Marcu, D.: “Induction of word and phrase align-
+ments for automatic document summarization”; Computational Linguistics, 31(4),
+(2005), 505-530.
+[Mart et al. 2004] Mart´inez-Fern´andez, J. L., Garc´ia-Serrano, A., Mart´inez, P. Villena,
+J.: “Automatic keyword extraction for news ﬁnder”; Lecture Notes in Computer
+Science, 3094, (2004), 99-119.
+[ Vapnik 1998] Vapnik, V. N.: “Statistical Learning Theory”; Springer-Verlag, New
+York, 1998.
+[ Vapnik 1999] Vapnik, T.: “Making large-scale SVM learning practical”; Advances in
+Kernel Methods-Support Vector Learning, (B. Scholkopf, C. Burges, A. J. Smola,
+eds.), MIT Press, Cambridge, 1999, 169-184.
+
+Wu C., Marchese M., Jiang J., Ivanyukovich A., Liang Y.: Machine ...
+
+1483
+
+[Platt 1999] Platt, J. C.: “Fast training of support vector machines using sequential
+minimal optimization”; Advances in Kernel Methods-Support Vector Learning, (B.
+Scholkopf, C. Burges, A. J. Smola, eds.), MIT Press, Cambridge, 1999, 185-208.
+[Suykens and Vandewalle 1999] J. A. K. Suykens, J. Vandewalle: “Least squares sup-
+port vector machine classiﬁers”; Neural Processing Letters, 9, 3, (1999), 293-300.
+[Suykens et al. 2000] Suykens, J. A. K., Lukas, L., Wandewalle, J.: “Sparse approx-
+imation using least squares support vector machines”; Proceedings of the IEEE
+International Symposium on Circuits and Systems, Geneva, Switzerland, 2000, 757-
+760.
+[Jiang et al. 2006] Jiang, J. Q., Song, C. Y., Wu, C. G., Marchese, M. , Liang,Y. C.:
+“Support vector machine regression algorithm based on chunking incremental learn-
+ing”; Lecture Notes in Computer Science, 3991, (2006), 547-554.
+[Jiang et al. 2005] Jiang, J. Q., Wu, C. G., Liang, Y. C.: “Multi-category classiﬁcation
+by least squares support vector regression”; Lecture Notes in Computer Science,
+3496, (2005), 863-868.
+[Angulo et al. 2006] Angulo, C. , Ruiz, F. J., Gonzalez, L., Ortega, J. A.: “Multi-
+classiﬁcation by using tri-class SVM”; Neural Processing Letters, 23, 1, (2006),
+89-101.
+[Anguita et al. 2004] Anguita, D., Ridella, S., Sterpi, D.: “A New Method for Multi-
+Class Support Vector Machines”; Proceedings of the IEEE IJCNN 2004, Budapest,
+Hungary, 2004.
+[Kressel 1999] Kressel, U.: “Pairwise classiﬁcation and support vector machine”; Ad-
+vances in Kernel Methods-Support Vector Learning, (B. Scholkopf, C. Burges, A.
+J. Smola, eds.), Cambridge, MA, MIT Press, (1999), 255-268.
+[Murphey and Guo 2004] Murphey, Y. L., Guo, H.: “Neural learning from unbalanced
+data”; Applied Intelligence, 21, 2, (2004), 117-128.
+
+

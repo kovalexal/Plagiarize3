@@ -55,12 +55,12 @@ else:
 
 lemmatizer = None
 
-languages = set({"RUS", "ENG"})
+languages = set({"ru", "en"})
 if (args.language != None and (args.language[0] in languages)):
 	language = args.language[0]
-	if (language == "RUS"):
+	if (language == "ru"):
 		lemmatizer = stem.lemmatize_ru
-	elif (language == "ENG"):
+	elif (language == "en"):
 		lemmatizer = stem.lemmatize_en
 	else:
 	    lemmatizer = None

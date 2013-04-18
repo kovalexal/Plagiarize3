@@ -224,7 +224,6 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
     else:
         url = url_search_num % vars()
 
-    links = []
     # Loop until we reach the maximum result, if any (otherwise, loop forever).
     while not stop or start < stop:
 
@@ -258,7 +257,7 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
             hashes.add(h)
 
             # Yield the result.
-            links.append(link)
+            yield link
 
         # Prepare the URL for the next request.
         start += num
@@ -266,7 +265,6 @@ def search(query, tld='com', lang='en', num=10, start=0, stop=None, pause=2.0):
             url = url_next_page % vars()
         else:
             url = url_next_page_num % vars()
-    return links
 
 def find(query_, tld = "com", lang = "en", filetype = "", pause = 2.0):
     """
