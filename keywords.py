@@ -5,6 +5,7 @@ import numbers
 
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
 import split
+from config import *
 
 KEYWORDS_MAX = 10
 
@@ -35,7 +36,7 @@ def generateCandidateKeywords(text, stopwords, lemmatizer = None):
 			if (lemmatizer != None):
 				word = lemmatizer(word)
 
-			if (word in split.delimeters or word in stopwords or isnumber(word) == True):
+			if (word in split.delimeters or word in stopwords or isnumber(word) == True or len(word) < MIN_WORD_LEN):
 				if (len(tmplist) != 0):
 					candidate_keywords.append(tmplist)
 				tmplist = []

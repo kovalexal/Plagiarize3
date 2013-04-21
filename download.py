@@ -282,7 +282,7 @@ def download(url, directory = ".", callback=progress_callback):
     except KeyboardInterrupt:
         exit(0)
     except:
-        print("Can`t download!\n{0}\n".format(url))
+        #print("Can`t download!\n{0}\n".format(url))
         return ""
     filenamealt = filename_from_headers(headers)
     if filenamealt:
@@ -294,7 +294,7 @@ def download(url, directory = ".", callback=progress_callback):
     shutil.move(tmpfile, filename)
 
     #print headers
-    print("\nSaved in {0}\n".format(filename))
+    print("\nSaved in \"{0}\"".format(filename), end = "\n\n")
     return filename
 
 
@@ -303,7 +303,7 @@ if __name__ == "__main__":
         sys.exit("No download URL specified")
 
     url = sys.argv[1]
-    filename = download(url, progress_callback)
+    filename = download(url, callback = progress_callback)
 
     print("")
     print("Saved under %s" % filename)

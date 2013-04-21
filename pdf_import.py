@@ -36,6 +36,9 @@ def get_txt(pathin, pathout):
     '''getTxt(name)
     Getting a txt file from a string str
     '''
+    if (pathin.endswith(".pdf") == False):
+        exit(-1)
+
     str = convert_pdf(pathin)
     file = open(pathout, "w")
     file.write(str)
