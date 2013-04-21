@@ -3,8 +3,9 @@
 import sys
 import re
 
+from config import *
+
 text = {}
-delimeters = set({".", ",", "!", "?", "(", ")", "{", "}", "[", "]", ":", ";", "-", "--", "”", "%", '––', '…', "/"})
 
 def get_text(filename):
     """
@@ -17,6 +18,8 @@ def get_text(filename):
         return ""
     text = f.read()
     f.close()
+    rx = re.compile(NON_PRINTABLE_SYMBOLS)
+    text = re.sub(rx, "", text)
     return text
 
 def get_list(filename, enableComments = True, sorted = False, lowerCase = True):

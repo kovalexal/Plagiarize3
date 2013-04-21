@@ -269,11 +269,11 @@ def download(url, directory = ".", callback=progress_callback):
     if directory.endswith("/"):
         directory = directory[:-1]
 
-    print(" Downloading:\n{0}\n".format(url))
+    #print(" Downloading:\n{0}\n".format(url))
 
     filename = filename_from_url(url) or "."
     # get filename for temp file in current directory
-    (fd, tmpfile) = tempfile.mkstemp(".tmp", prefix=filename+".", dir="./TMP/")
+    (fd, tmpfile) = tempfile.mkstemp(".tmp", prefix=filename+".", dir = directory)
     os.close(fd)
     os.unlink(tmpfile)
 
@@ -294,7 +294,7 @@ def download(url, directory = ".", callback=progress_callback):
     shutil.move(tmpfile, filename)
 
     #print headers
-    print("\nSaved in \"{0}\"".format(filename), end = "\n\n")
+    #print("\nSaved in \"{0}\"".format(filename), end = "\n\n")
     return filename
 
 

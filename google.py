@@ -45,8 +45,8 @@ if not home_folder:
     home_folder = os.getenv('USERHOME')
     if not home_folder:
         home_folder = '.'   # Use the current folder on error.
-cookie_jar = http.cookiejar.LWPCookieJar(
-                            os.path.join(home_folder, '.google-cookie'))
+cookie_jar = http.cookiejar.LWPCookieJar(os.path.join(home_folder, '.google-cookie'))
+
 try:
     cookie_jar.load()
 except Exception:
@@ -61,13 +61,17 @@ def get_page(url):
     cookie_jar.add_cookie_header(request)
 
     got_result = 0
-    #responce = None
     while not(got_result):
         try:
             responce = urllib.request.urlopen(request)
             got_result = 1
-        except (socket.gaierror, urllib.error.URLError, urllib.error.HTTPError):
-            print("No internet connection found!")
+        except urllib.error.HTTPError as e:
+            print("The server couldn't fulfill the request.")
+            print('Error code: ', e.code)
+            exit(0)
+        except urllib.error.URLError as e:
+            print("Failed to reach a server")
+            print("Reason: ", e.reason)
             ans = input("Do you want to try again? (\"y\" or \"n\"): ")
             if (ans != "y"):
                 exit(0)
@@ -135,7 +139,7 @@ def search(query, tld = "com", lang = "en", pause = 2.0, filetype = "pdf"):
     # Hashes are used to avoid repeated results
     hashes = set()
 
-    # Prepating the search string
+    # Preparing the search string
     if (filetype == ''):
         query = urllib.parse.quote_plus(query)
     else:
@@ -145,7 +149,7 @@ def search(query, tld = "com", lang = "en", pause = 2.0, filetype = "pdf"):
 
     html = get_page(search_url)
 
-    '''soup = BeautifulSoup.BeautifulSoup(html)
+    soup = BeautifulSoup.BeautifulSoup(html)
     stats = soup.find(id = "resultStats")
     stat = parse_result_stats(stats)
     if (stat == ""):
@@ -155,12 +159,12 @@ def search(query, tld = "com", lang = "en", pause = 2.0, filetype = "pdf"):
     results = input("Found about {0} results.\nHow much to process? (0 - EXIT): ".format(stat))
     results = convert_int(results)
     if (results > convert_int(stat)):
-        results = convert_int(stat)'''
+        results = convert_int(stat)
     
     results_found = 0
-    #links = []
+    links = []
     start = 0
-    while (1):
+    while (results_found < results):
         time.sleep(pause)
         soup = BeautifulSoup.BeautifulSoup(html)
 
@@ -180,18 +184,16 @@ def search(query, tld = "com", lang = "en", pause = 2.0, filetype = "pdf"):
                 continue
             hashes.add(h)
 
-            results_found += 1
-            yield link
-            '''if (results_found < results):
+            if (results_found < results):
                 links.append(link)
                 results_found += 1
             else:
-                break'''
+                break
         start = results_found
         search_url = url_next_page % {"domain" : tld, "language" : lang, "search_query" : query, "start" : start}
         time.sleep(pause)
         html = get_page(search_url)
-    #return links
+    return links
 
 if __name__ == "__main__":
     import sys

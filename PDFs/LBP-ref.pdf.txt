@@ -1,0 +1,222 @@
+Loopy Belief Propagation
+
+for image processing 
+
+Chistuakov Alexander
+
+MSU, CMC 201 group
+
+Introduction
+In   modern   science   and   industry   challenges   associated   with   the   description   of  
+random   factors   influence   are   often.   Such   problems   appear     in   the   fields   of   statistical  
+physics,   computer   vision,   coding   and   decoding   messages   and   models   of   artificial  
+intelligence.
+Usually,   the  model  which  describes   the   stated   challenge   can  be   simulated  with   a  
+special graph (graphical model). In this model vertexes are responsible for local states of  
+variables and edges describe the influence between variables. One of the major problems  
+of   most   of   these   challenges   is   that   the   solution   can   not   be   found   except   a   complete  
+listing   of   all   possible   states.   As   an   example,   these   NP-complete   problems   are   the  
+selection  of   a  variable  marginal  distribution   and   finding   the  most  probable   state  of   the  
+system.
+However,     in   some  cases,   the  solution  can  be  accelerated  with  algorithms,  which  
+does not guarantee to find the right answer, but usually give an answer close to the right.  
+One of these algorithms is considered in this article – loopy belief-propagation algorithm  
+(LBP).
+We  will   consider   the  principle   of  belief-propagation   algorithm   (BP),   explore   the  
+possibility  of     it's   implementation  optimizations  and  mark   the  set  of  problems  LBP can  
+be used for.
+
+Main graphical models
+Before we start to study BP algorithm itself, let's specify the model of the graph 
+for which the algorithm will be applied. In the course of graphic models the following 
+three types types are most important:
+Bayesian   Network  –  directed   acyclic   graphs   whose 
+nodes   represent   random   variables,   and   edges   represent 
+conditional dependencies.
+To   calculate   a   probability   of   the   whole   system's  
+statement   { х } you  should  multiply  the  probabilities of states  
+for each vertex according to their's conditional probabilities.
+N
+p ( x 1, x 2 ,… , x N )=∏
+i =1
+of the vertex i.
+For the network showed above we can write it as
+p ({ x })= p ( x A )⋅p ( x S )⋅p ( xT ∣x A)⋅p ( x L∣x S )⋅p ( x B∣x S )⋅p ( x E∣x L , x T )⋅p ( x X∣x E )⋅p ( x D∣x E , x B )
+As an example, this model is good for describing the system of influence between  
+diseases and symptoms.
+
+,  where   Par ( xi ) –     parents 
+
+p ( x i∣Par ( x i ) )
+
+Pairwise  Markov   Random   Field  –   this   model   is   rather 
+similar to Bayesian network. However in this model all edges are  
+undirected and each vertex has it's own prior distribution.
+We   can   image   it   with   an   analogy   of   Ising   model.   Our  
+graph will be the regular grid (squared for example), each vertex  
+–  is an abstract polarized particle,  which can affect  with positive  
+or  negative  charge.  Then  we  can   introduce   functions ψij ( x i , x j )
+ 
+named  interaction for each pair of neighbor vertexes and  the function φ i ( x i ) named  the 
+field potential for each vertex.
+{ x } can   be   calculated   as
+ 
+So   the   joint   probability   of   statement
+, where  1
+p ({ x })= 1
+ψi j ( xi , x j )∏
+Z ∏
+Z –  is a normalizing constant .
+φ i ( xi , y i)
+i
+( i , j )
+Factor   graph  –  a   bipartite   graph   representing   the 
+factorization   of   a   function.   It   contains   vertexes   of   two   kinds:  
+variables,   which   have   theirs   prior   distributions φ i ( x i )
+,  and 
+factors which describes the probability of all it's neigbor statement
+ψ f ( {neig ( f ) } )
+The joint probability of statement  { x } is
+p ({ x })= 1
+,   where 1
+ψ f ( {neig ( f ) } )∏
+Z ∏
+Z –   as   a   before,   a 
+f
+i
+normalizing constant.
+One of the problems the factor graph could be applied for – a message decoding.
+
+φ i ( x i )
+
+The unification of graphics models
+The   article   [1]   contains   an   algorithm   which   afford   to   process   equivalent  
+modifications between  all  the  models  listed  above.  It  gives us a possibility  to   transform  
+all the models to the Markov Random Field (MRF) and discuss only them.
+This transformation is reasonable by the two reasons:
+1. The BP algorithm we are going to discuss is based on sending of special messages  
+between  different vertexes over the  graph. The Bayesian network will make  us to  
+mark   the   difference   between   messages   from   parents   to   sons   and   from   sons   to  
+parents.   The   Factor   graph   model   will   differ   messages   from   factors   and   from  
+variables.   In   opposite   to   these   two   models,   the   Markov   Random   Field   has   a  
+complete symmetry and make no difference between all the messages. 
+2. The main cause of this article – is a demonstration of applying of BP algorithm for 
+image processing. The MRF is the most natural model to adapt to this problem.
+
+General description of BP algorithm
+Let  us  set,   that  we  have  an  undirected  graph  G with   functions   from  MRF  model. 
+And  we  want   to   find   out   the  marginal  distribution   of   a   certain   variable.  Moreover,  we  
+suppose,   that  each  vertex  has  a   finite  number  of  different  states.   (If  not,  we  can  always  
+split the definition area on a finite number of segments and then continue our work with  
+a small error).
+According   to   a   standard   theory,   if   we   want   to   calculate   the   probability   of  
+statement x i for vertex  i, we must sum the probabilities over all the system statements,  
+contains x i
+.
+
+φ u ( x u )
+
+p ( x 1, x 2, … , x N )
+
+…∑
+p ( x i )=∑
+∑
+∑
+…∑
+x i− 1
+x1
+x 2
+x i +1
+x N
+p ( x i )= 1
+∏
+Z ∑
+ψu v ( x u , x v )∏
+u
+( u , v )
+{x }∋ xi
+The  complexity  of  calculations  grows  exponential  and  could  not  be  used   for   real  
+problems.
+To solve it for many cases we can use the BP algorithm. The simplest variant of its  
+implementation is described bellow.
+Let us process  K  iterations, and on each of them all the pairs of neighbor vertexes  
+will  send  some  special  messages   to  each  other.  The  message μ v→u
+is  a  vector   the  same 
+length  as   the  vertex  u  has  states  and  describes  how   the  vertex  v  “beliefs”,   that  vertex  u 
+can  be   stayed   in   these   statements.  To   calculate   the   certain   coordinate   of   such  message  
+we use formula:
+
+old ( x v )
+μ k → v
+
+ψ vu ( x v , x u)⋅φ v ( x v ) ∏
+new ( x u)=∑
+μ v →u
+k ∈neig ( v ) ∖ u
+x v
+where neig ( v ) – all the neighbor of vertex v. Initially all the messages could be random.
+After all, we can calculate the vertex distribution p ( x i ) as
+p ( x i )= 1
+Z ⋅φ i ( xi )⋅ ∏
+k∈ neig ( i)
+It is not difficult to show, that this algorithm gives the correct distribution for each  
+variable   after diameter (G )⩽ N iterations.   For   random   graphs   there   is   no   proof   of   this  
+algorithm   converges,  but  on  practice   in  many   cases   it  work  good.   In   cyclic  graphs  BP  
+algorithm called Loopy BP.
+
+μ k → i ( x i )
+
+Max-possibility statement search
+Before we discuss the announced applying of BP algorithm, lets mark another 
+
+useful   property   of       the   algorithm.   If   we   will   only   change   the   sum-operator   on  max-
+operator we will learn to find the most possible statement { ̃x } of the whole system
+p ({ x })
+... max
+max
+p ({ ̃x })= max
+x1
+x 2
+x N
+New message updating formula will look like
+ψvu ( x v , x u )⋅φ v ( x v ) ∏
+new ( x u)= max
+μ v →u
+x v
+k ∈ neig ( v ) ∖ u
+The   formula   for   calculating   of   the   single-vertex   probabilities   will   left   without  
+changing.  After   that,   to   find   the   most   possibility   statement   we   just   need   to   mark   the  
+statement with the highest “probability” for each vertex.
+
+old ( x v )
+μ k → v
+
+Image processing
+Now,   let   us   talk   about   the   promised   image   processing   by   using     BP   .  The   first  
+problem   we   learn   to   solve   is   image   restoring.   For   example   we   have   a   bitmap   image  
+received with some sharps and noises and we want to restore the initial image.
+To  do   it,  we  can  perform   this   image  as  a   regular  graph  and  associate  each  vertex  
+with   an   random-variable   possible   to   stand   in  k  different   states   (brights   of   the   pixel). 
+Then  we   introduce   a   penalty   for   a   big  variance   from   initial   image   and   for   differences 
+between   neighbor   colors   by   using   functions   from   MRF.   As   an   example  
+.  As   experiments   show,   the   LBP   algorithm   converges   very  
+φ i ( x i )= e c1⋅∣xi− x i0∣ , ψij= e c2⋅∣x i−x j∣
+fast on such graphs. 
+If  we  want   to  solve  another  problem  –   the  projecting  of  stereo  vision  on  a  plane,  
+we   can   just   change   the   potential   function:   φ i ( x i )=(e c⋅∣x i− Li∣+e c⋅∣x i− R i∣) / 2 ,  where   Li  and  Ri 
+are colors of pixels in two initial left and right images.
+Finally,   some   similar   formulas   could   be   used   for   image   segmentation   in  
+recognition problems.
+
+Another problems BP can solve
+Today   the  BP  algorithm   is  widely   spread   in   areas   of  Bayesian   prognosis,   image  
+and stereo image processing, physic modulation and graph coloring.
+Summary this algorithm gives the correct answer on tree-graphs and usually close  
+to correct answers on random graphs.
+Main advantages are simplicity in implementation and ease to parallelize.
+
+References
+[1] Jonathan S. Yedidia. Understanding Belief Propagation and its Generalizations.
+[2] Pedro F. Felzenszwalb . Efficient Belief Propagation for Early Vision .
+
+

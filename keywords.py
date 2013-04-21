@@ -4,10 +4,7 @@ import operator
 import numbers
 
 from nltk.tokenize import word_tokenize, wordpunct_tokenize, sent_tokenize
-import split
 from config import *
-
-KEYWORDS_MAX = 10
 
 def isnumber(num):
     '''
@@ -36,7 +33,7 @@ def generateCandidateKeywords(text, stopwords, lemmatizer = None):
 			if (lemmatizer != None):
 				word = lemmatizer(word)
 
-			if (word in split.delimeters or word in stopwords or isnumber(word) == True or len(word) < MIN_WORD_LEN):
+			if (word in delimeters or word in stopwords or isnumber(word) == True or len(word) < MIN_WORD_LEN):
 				if (len(tmplist) != 0):
 					candidate_keywords.append(tmplist)
 				tmplist = []
@@ -51,7 +48,10 @@ def generateStringFromList(list):
 	'''
 	string = ""
 	for i in range(len(list) - 1):
-		string += list[i] + " "
+		if (list[i].startswith("'")):
+			string = string[:-1] + list[i] + " "
+		else:
+			string += list[i] + " "
 	string += list[len(list) - 1]
 	return string
 

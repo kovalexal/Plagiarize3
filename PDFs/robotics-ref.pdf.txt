@@ -1,0 +1,155 @@
+Actual problems of robotics
+
+CMC MSU, December 2012
+
+Alexander Chistyakov
+
+Introduction
+There’s no precise definition, but by general agreement a robot is a programmable  
+machine   that   imitates   the   actions   or   appearance   of   an   intelligent   creature–usually   a  
+human.   To   qualify   as   a   robot,   a   machine   has   to   be   able   to   do   two   things:   1)   get  
+information   from   its   surroundings,   and   2)   do   something   physical–such   as   move   or  
+manipulate objects.
+The  word   robot   comes   from   the  Czech  word  robota,meaning   drudgery  or   slave-
+like   labor.   It  was   first  used   to  describe   fabricated  workers   in   a   fictional  1920s  play  by  
+Czech   author  Karel  Capek   called  “Rossum’s  Universal  Robots”.In   the   story,  a   scientist 
+invents robots  to help people  by  performing simple,  repetitive  tasks.  However,  once  the  
+robots are used to fight wars, they turn on their human owners and take over the world.
+In   last  50  years   the   robotics  made  a  great   leap   forward.   If   in  1950's   robots  could  
+only  perform  a   fixed   sequence  of  actions   like  assembling  car  engines  or  weight   lifting,  
+today  we  have   robots  driving  cars,  extinguishing   fires,  doing   the  house  work  and  even  
+travel to Mars.
+However, there is a huge set of unsolved problems till now. This article is a review  
+of current front line in this area.
+We will see next branches of robotics:
+Industrial
+•
+• Military
+• Medical
+• Entertainment
+
+Industrial robots
+The   ﬁrst   industrial   robot   in   Europe,   a   Unimate,   was   installed   at   Metallverken,  
+Uppsland  Väsby,   Sweden.   It  weighed   two   tons   and  was   controlled   by   a   program   on   a  
+magnetic   drum.   They   used   hydraulic   actuators   and   were   programmed   in   joint  
+coordinates, i.e. the angles of the various joints were stored during a teaching phase and  
+replayed in operation. The rate of accuracy was within 1/10,000 of an inch.
+The ﬁrst National Symposium on Industrial 
+Robots   was   held   in   1970   in   Chicago,   USA.  A  
+year   later   it   was   upgraded   to   an   international  
+conference   and   was   called   the   International 
+Symposium   on   Industrial   Robots   (ISIR).   The  
+purpose   of   this   symposium   was   to   provide  
+researchers   and   engineers   worldwide   an 
+opportunity   to   present   their   work   and   to   share  
+their   ideas   in   the   ﬁelds   of   robotics.   In   1997   the  
+
+symposium   changed   its   name   to   International   Symposium   on   Robotics   (ISR)   and  
+included the technology of service robots. Today the ISR still represents a meeting point  
+for  all  scientiﬁc,   technical  and   industrial   topics   related   to   robotics.  One  main  goal   is   to  
+bring   academia   and   industry   together.   The   symposium   is   organized   annually   by   a  
+national   robot   association   either   in  America,   Europe   or  Asia   in   conjunction   with   an  
+international robot exhibition.
+Takeo Kanade, Carnegie Mellon University, USA designed the world’s ﬁrst Direct  
+Drive  Arm  He   also   founded   the  world’s   ﬁrst   doctoral   program   in   Robotics,  which   he  
+chaired   from   1989-1993   at  Carnegie  Mellon.  Direct  Drive  Robotic  Arms   are   currently  
+the   best   method   of   design   for   mechanical   arms,   due   to   the   removal   of   transmission  
+mechanisms   between   the  motors   and   loads.   rather   than   using   reducers   and   chain   belts  
+which   produce   uneven   movements.   The   result   is   an   arm   that   can   move   freely   and  
+smoothly, allowing for high speed precision robots. Design of the arm was completed in  
+1981, and successful patent was obtained a few years later.
+In   2005   the   IEEE   Robotics   and   Automation   Society   (IEEE/RAS)   and   the  
+International   Federation  of  Robotics   (IFR)   agreed   to   jointly   sponsor   the   Invention   and  
+Entrepreneurship in Robotics and Automation (IERA) Award. The purpose of this award  
+is to highlight and honor the achievements of the inventors with value creating ideas and  
+entrepreneurs  who   propel   those   ideas   into  world-class   products.  At   the   same   time   the  
+joint   disposition   of   the   award   underlines   the   determination   of   both   organizations   to  
+promote stronger collaboration between robotics science and robotics industry.
+Now,   the   development   on   industrial   robots   is   rather   stable   and   aimed   only   on  
+improvement of precision.
+
+Military robots
+Broadly   defined,   military   robots   date  
+back   to  World  War   II  and   the  Cold  War  in   the 
+form  of   the  German  Goliath   tracked  mines  and 
+the  Soviet  teletanks.  The  MQ-1  Predator  drone 
+was  when   "CIA  officers   began   to   see   the   first  
+practical   returns  on   their  decade-old   fantasy  of  
+using aerial robots to collect intelligence".
+The  use  of  robots  in  warfare,  although   traditionally  a   topic   for  science   fiction,   is 
+being   researched   as   a   possible   future  means   of   fighting  wars.  Already   several  military 
+robots have been developed by various armies.
+After   the   World   War   the   implementation   or   robots   into   forces   had   been  
+progressing rapidly. Now the armies of many countries have own automatic helicopters,  
+cargo   transporters and  soldiers,  which  can  be  manipulated  from   the  control  room  or  act  
+by itself.
+
+The feature of the main part of military robots – is their price. In a difference from  
+industrial   robots   a   metal   troop   can   be   explored   in   first   15   minutes   after   launch,   so  
+engineers   try   to   construct   them   as   cheap   as   it   possible,   to  make   the  mass  manufacture  
+available.  For   example,   in  2011   the  government  of  US  decided   to   send  more   than   two  
+thousand robots in Afghanistan as an reinforcement.
+
+Medical robots
+Medical   robots   are  robots  that   allow   surgeons   greater 
+access   to   areas   under   operation   using  more   precise   and   less 
+invasive  methods.  They  are   in  most  telemanipulators,  which 
+use the surgeon's actions on one side to control the "effector"  
+on the other side.
+In   1985   a   robot,   the  PUMA  560,  was   used   to   place   a 
+needle   for   a  brain   biopsy  using  CT   guidance.   In  May,   2006  
+Robot  carries  out  operation  by   itself.  The  50-minute  surgery, 
+which   took   place   in   a  Milan   hospital,  was   carried   out   on   a  
+34-year-old   patient   suffering   from   atrial   fibrillation.   Now   we   have   robots,   which   can  
+perform  a  any  kind  of  operations,  but   there   is  a  big  disadvantage  of  medical   robots.  As  
+the biggest part of them  is still needed  in remote control, surgeons shell  to learn how  to  
+manipulate   it,   and   as   it   takes   from   8   to   12   times   to   adopt   the   system   completely,   this  
+learning can get fatal for a someone. 
+However,   surgery   is   not   the   only  way   of   using   robots   in  medicine.  They   can   be  
+used for nursing care or rehabilitation. 
+
+Entertainment robots
+Of   course   such   interesting   theme   like   robotics  
+could   not   be   stayed   far   from   community   for   a   long  
+time.   In   1990   the   first   electronic   dog   Teksta   was 
+invented.  After   that  a  wave  of  robots surged   to  market. 
+Every new model had some improvements in goings-on 
+simulation, commands detection and design.
+An entertainment robot  is, as  the name  indicates,  
+a robot that is not made for utilitarian use, as in production or domestic services, but for  
+the sole subjective pleasure of the human it serves, usually the owner or his housemates,  
+guests or clients. 
+Another interesting robot line is ASIMO (Advanced Step in Innovative Mobility).  
+The modern model of this robot can walk on 2 legs with speed up to 9 km/h, pour water  
+from bottle to glass and recognize it's owner by camera. 
+
+After   the  first  entertainment   robots  appeared,   they  got  a   role  of  effective  element  
+for   advertisement.   Many   corporations   started   to   use   robots   to   attract   more   people   in  
+stores or exhibitions.
+
+Conclusion
+As we see, robotics had filled all spheres of our lives and in all this spheres are 
+needed in improvement. The common trends are developments in artificial intelligence 
+and decreasing of the dependence from human. The enhancement of precision is actual 
+too. But the intensity of today research give us some reasons to suppose, that robotics 
+will change our world completely soon.  
+
+References
+• www.thetech.org/exhibits/online/robotics/universal/index.html
+ 
+ 
+• www.ifr.org/uploads/media/History_of_Industrial_Robots_online_brochure_by_I
+ 
+ 
+FR_2012.pdf
+• www.darpagrandchallenge.com/
+ 
+ 
+• phys.org/news67222790.html
+ 
+ 
+• world.honda.com/ASIMO/
+ 
+ 
+
+
