@@ -1,7 +1,6 @@
 import sys
 from hash import md5sum_str
-
-SHINGLES_LEN = 5
+from config import *
 
 def gen_shingles(word_list):
     global SHINGLES_LEN

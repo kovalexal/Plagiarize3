@@ -160,7 +160,15 @@ class file_process_thread(Thread):
         Parsing PDFs into TXTs
         """
         self._file.path_txt = self._file.path + ".txt"
+        threadLock.acquire()
+        start_time = time()
+        print("Started parsing \"{0}\"".format(self._file.path), end = "\n\n")
+        threadLock.release()
         parse_result = parse_pdf(self._file)
+        end_time = time()
+        threadLock.acquire()
+        print("Parsing \"{0}\" took {1:.3f}".format(self._file.path, end_time - start_time), end = "\n\n")
+        threadLock.release()
         if (self._file.appropriate == False):
             self._return = None
             return

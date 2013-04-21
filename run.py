@@ -16,7 +16,7 @@ if __name__ == "__main__":
     START_TIME = time()
 
     #Command line parsing info
-    parser = argparse.ArgumentParser(description = "Searching gor plagiarism about a pdf or txt file.")
+    parser = argparse.ArgumentParser(description = "Searching for plagiarism about a pdf or txt file.")
     parser.add_argument("-p", "--pdf", nargs = 1, help = "Path to pdf file" ''', metavar = "\"*.pdf\""''')
     parser.add_argument("-t", "--txt", nargs = 1, help = "Path to txt file" ''', metavar = "\"*.txt\""''')
     parser.add_argument("-s", "--stopwords", nargs = 1, help = "Path to a file with stopwords")
@@ -155,7 +155,7 @@ if __name__ == "__main__":
     query = query[:-2]
     print("Getting links from Google search")
     start_time = time()
-    links = google.search(query, pause = QUERY_PAUSE, filetype = "pdf")
+    links = google.search(query, tld = TLD, lang = LANG, pause = QUERY_PAUSE, filetype = FILETYPE)
     end_time = time()
     print("Finding links took {0:.3f}s".format(end_time - start_time), end = "\n\n")
 
@@ -164,19 +164,15 @@ if __name__ == "__main__":
     You should process them also, to get the needed links
     At this point, I skip them
     """
-    number = 1
-    for link in links:
-        print("{0}) \"{1}\"".format(number, link))
-        number += 1
-    print()
 
     checked_links = []
     number = 0
     for link in links:
-        if (link.endswith(".pdf") == True):
+        if (link.endswith(".pdf") == True or link.endswith("=pdf") == True):
             number += 1
             checked_links.append(link)
             print("{0}) \"{1}\"".format(number, link))
+
     links = checked_links
     if len(links) == 0:
         print("No results were found for your request (with a \".pdf\" at the end)")
