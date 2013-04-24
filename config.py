@@ -4,16 +4,13 @@ DOWNLOAD_DIR = "./TMP/"
 #Minimum word length
 MIN_WORD_LEN = 1
 
-#Pause between Google queries
-QUERY_PAUSE = 2.0
-
 #Delimeters
 delimeters = set({".", ",", "!", "?", "(", ")", "{", "}", "[", "]", ":", ";", "-", "--", "”", "%", '––', '…', "/", "—", "`", "``", "'"})
 
 #Max keywords to get
 KEYWORDS_MAX = 10
 
-#Pause, between Google queries
+#Pause between Google queries
 QUERY_PAUSE = 1.0
 
 #Search settings
