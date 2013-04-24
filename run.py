@@ -165,6 +165,11 @@ if __name__ == "__main__":
     At this point, I skip them
     """
 
+    number = 1
+    for link in links:
+        print("{0}) {1}".format(number, link))
+        number += 1
+
     checked_links = []
     number = 0
     for link in links:

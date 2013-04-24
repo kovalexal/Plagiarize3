@@ -1,5 +1,11 @@
 Detection of plagiarism 
 
+Required libraries:
+- ntlk
+- pymorphy2 (with pymorphy2-dicts module)
+- BeautifulSoup4
+- stemming
+- dawg_python
 
 ///////////////////////////////////////////////////////////////////////////////////////
 usage: run.py [-h] [-p PDF] [-t TXT] [-s STOPWORDS] [-l ru/en] [-o OUTPUT]
