@@ -66,6 +66,7 @@ def ssk(list1, list2, lambda_, index):
 
 list1 = []
 str1 = "science is organized knowledge"
+#str1 = "abcd"
 for char in str1:
     list1.append(char)
 
@@ -73,6 +74,7 @@ for char in str1:
 list2 = []
 str2 = "wisdom is organized life"
 #str2 = "science is organized knowledge"
+#str2 = "ad"
 for char in str2:
     list2.append(char)
 
