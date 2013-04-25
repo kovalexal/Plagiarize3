@@ -1,6 +1,10 @@
+from config import *
 from math import sqrt
 
-def ssk(list1, list2, lambda_, index):
+def ssk(list1, list2, lambda_, kernel_number):
+    '''
+    Calculates SSK for two lists
+    '''
     list1_len = len(list1)
     list2_len = len(list2)
 
@@ -12,7 +16,7 @@ def ssk(list1, list2, lambda_, index):
     
     k = [0.0 for x in range(list1_len + 1)]
 
-    for p in range(1, index):
+    for p in range(1, kernel_number):
         """
         Calculating next K``
         """
@@ -50,7 +54,7 @@ def ssk(list1, list2, lambda_, index):
     """        
 
     for i in range(len(list1) + 1):
-        if min(i, len(list2)) < index:
+        if min(i, len(list2)) < kernel_number:
             k[i] = 0
         else:
             k[i] = k[i - 1]
@@ -60,59 +64,28 @@ def ssk(list1, list2, lambda_, index):
     return(k[len(list1)])
 
 
-#list1 = ["a", "b", "c", "d", "e", "f"]
-#list2 = ["a", "b", "c", "f", "e", "d"]
+def ssk_normalized(list1, list2, lambda_, kernel_number):
+    '''
+    Calculates normalized SSK for two lists
+    '''
+    return ssk(list1, list2, lambda_, kernel_number) / sqrt(ssk(list1, list1, lambda_, kernel_number) * ssk(list2, list2, lambda_, kernel_number))
+
+if __name__ == "__main__":
+
+    list1 = []
+    str1 = "science is organized knowledge"
+    for char in str1:
+        list1.append(char)
 
 
-list1 = []
-str1 = "science is organized knowledge"
-#str1 = "abcd"
-for char in str1:
-    list1.append(char)
+    list2 = []
+    str2 = "wisdom is organized life"
+    #str2 = "science is organized knowledge"
+    for char in str2:
+        list2.append(char)
 
+    lambda_ = 0.5
 
-list2 = []
-str2 = "wisdom is organized life"
-#str2 = "science is organized knowledge"
-#str2 = "ad"
-for char in str2:
-    list2.append(char)
+    for kernel_number in range(1, 7):
+        print("{0:.3f}".format(ssk_normalized(list1, list2, lambda_, kernel_number)))
 
-
-#list1 = [1, 2, 3, 4]
-#list2 = [5, 2, 3, 6]
-
-lambda_ = 0.5
-index = 1
-
-#print(ssk(list1, list2, lambda_, index))
-#exit(0)
-#print(ssk(list1, list2, lambda_, index) / sqrt(ssk(list1, list1, lambda_, index) * ssk(list2, list2, lambda_, index)))
-
-"""
-list1 = []
-file1 = open("./TMP/10.1.1.93.6473.pdf.txt")
-text1 = file1.read()
-file1.close()
-for char in text1:
-    list1.append(char)
-
-list2 = []
-file2 = open("./PDFs/10.1.1.93.6473.pdf.txt")
-text2 = file2.read()
-file2.close()
-for char in text2:
-    list2.append(char)
-"""
-
-for index in range(1, 7):
-    print("{0:.3f}".format(ssk(list1, list2, lambda_, index) / sqrt(ssk(list1, list1, lambda_, index) * ssk(list2, list2, lambda_, index))))
-
-
-#for sublist in k_2_cur:
-#    print(sublist)
-
-#print()
-
-#for sublist in k_1_cur:
-#    print(sublist)
