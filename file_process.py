@@ -242,6 +242,7 @@ def enumerate_words(list_):
             dictionary[word] = value
             current_number += 1
         result_list.append(value)
+    return result_list
 
 
 if __name__ == "__main__":

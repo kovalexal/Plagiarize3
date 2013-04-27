@@ -2,6 +2,7 @@ Detection of plagiarism
 
 Required libraries:
 - ntlk
+- PyYAML>=3.09
 - pymorphy2 (with pymorphy2-dicts module)
 - BeautifulSoup4
 - stemming

@@ -1,5 +1,6 @@
 from config import *
 from math import sqrt
+import gc
 
 def ssk(list1, list2, lambda_, kernel_number):
     '''
@@ -61,6 +62,11 @@ def ssk(list1, list2, lambda_, kernel_number):
             for j in range(len(list2)):
                 if list1[i - 1] == list2[j]:
                     k[i] += lambda_ * lambda_ * k_1_prev[i - 1][j]
+    del k_1_prev
+    del k_1_cur
+    del k_2_prev
+    del k_2_cur
+    gc.collect()
     return(k[len(list1)])
 
 
@@ -68,7 +74,11 @@ def ssk_normalized(list1, list2, lambda_, kernel_number):
     '''
     Calculates normalized SSK for two lists
     '''
-    return ssk(list1, list2, lambda_, kernel_number) / sqrt(ssk(list1, list1, lambda_, kernel_number) * ssk(list2, list2, lambda_, kernel_number))
+    tmp1 = ssk(list1, list2, lambda_, kernel_number)
+    tmp2 = ssk(list1, list1, lambda_, kernel_number)
+    tmp3 = ssk(list2, list2, lambda_, kernel_number)
+    return tmp1 / sqrt(tmp2 * tmp3)
+    #return ssk(list1, list2, lambda_, kernel_number) / sqrt(ssk(list1, list1, lambda_, kernel_number) * ssk(list2, list2, lambda_, kernel_number))
 
 if __name__ == "__main__":
 
