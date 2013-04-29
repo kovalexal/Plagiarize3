@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from Tests import results
+
 
 from config import *
 from math import sqrt
@@ -85,35 +87,39 @@ def ssk_normalized(list1, list2, lambda_, kernel_number):
     #return ssk(list1, list2, lambda_, kernel_number) / sqrt(ssk(list1, list1, lambda_, kernel_number) * ssk(list2, list2, lambda_, kernel_number))
 
 if __name__ == "__main__":
-    lambda_ = 0.5
+    lambda_ = 0.99
 
-    file1 = file_process.file(path_txt = sys.argv[1]) 
-    file2 = file_process.file(path_txt = sys.argv[2])
+    min_ssk = 100
 
-    file1.text = file_process.get_text(file1)
-    file1.words = file_process.get_words(file1)
-    file1.words = file_process.enumerate_words(file1.words)
+    for filenames in results:
+        file1 = file_process.file(path_txt = "./Tests/" + filenames[0]) 
+        file2 = file_process.file(path_txt = "./Tests/" + filenames[1])
 
-    file2.text = file_process.get_text(file2)
-    file2.words = file_process.get_words(file2)
-    file2.words = file_process.enumerate_words(file2.words)
+        file1.text = file_process.get_text(file1)
+        file1.words = file_process.get_words(file1)
+        file1.words = file_process.enumerate_words(file1.words)
 
-    print("Text1:")
-    print(file1.words, end = "\n\n")
-    print("Text2:")
-    print(file2.words, end = "\n\n")
+        file2.text = file_process.get_text(file2)
+        file2.words = file_process.get_words(file2)
+        file2.words = file_process.enumerate_words(file2.words)
 
-    sim = ssk_normalized(file1.words, file2.words, lambda_, 2)
-    print("SSK result {0:.3f}".format(sim))
-    if (0 < sim < 0.190):
-        print("Result: Not Plagiarize")
-    else:
-        print("Result: Plagiarize")
-    '''
-    elif (0.193 < sim < 0.443):
-        print("heavy")
-    elif (0.549 < sim < 0.765):
-        print("light")
-    elif (0.669 < sim < 0.860):
-        print("cut")
-    '''
+        '''
+        print("Text1:")
+        print(file1.words, end = "\n\n")
+        print("Text2:")
+        print(file2.words, end = "\n\n")
+        '''
+
+        sim = ssk_normalized(file1.words, file2.words, lambda_, 2)
+
+        '''
+        print("SSK result {0:.3f}".format(sim))
+        if (0 < sim < 0.190):
+            print("Result: Not Plagiarize")
+        else:
+            print("Result: Plagiarize")
+        '''
+        if (results[(filenames[0], filenames[1])] == 1):
+            if (sim < min_ssk):
+                min_ssk = sim
+    print(min_ssk)

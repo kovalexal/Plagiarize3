@@ -200,8 +200,11 @@ if __name__ == "__main__":
         if (return_file != None):
             files.append(return_file)
 
+    num = 1
     for f in files:
-        print(f.similarity)
+        print("{0}) {1}".format(f.path_txt))
+        print(f.similarity, end = "\n\n")
+        num += 1
 
     END_TIME = time()
     print("Program ended successfully!")
