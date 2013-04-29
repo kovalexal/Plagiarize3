@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from config import *
 from math import sqrt
 import gc
@@ -101,4 +103,17 @@ if __name__ == "__main__":
     print("Text2:")
     print(file2.words, end = "\n\n")
 
-    print("Simularity: {0}".format(ssk_normalized(file1.words, file2.words, lambda_, 1)))
+    sim = ssk_normalized(file1.words, file2.words, lambda_, 2)
+    print("SSK result {0:.3f}".format(sim))
+    if (0 < sim < 0.190):
+        print("Result: Not Plagiarize")
+    else:
+        print("Result: Plagiarize")
+    '''
+    elif (0.193 < sim < 0.443):
+        print("heavy")
+    elif (0.549 < sim < 0.765):
+        print("light")
+    elif (0.669 < sim < 0.860):
+        print("cut")
+    '''
